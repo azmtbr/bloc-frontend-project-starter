@@ -54,7 +54,11 @@
 			
 			currentBuzzObject.bind('timeupdate', function() {
          $rootScope.$apply(function() {
+					 if (SongPlayer.currentSong.length <= currentBuzzObject.getTime()) {
+							 SongPlayer.next();
+						 } else {
              SongPlayer.currentTime = currentBuzzObject.getTime();
+						 }
          });
       });
 				
@@ -83,6 +87,7 @@
 		var getSongIndex = function(song) {
 			return currentAlbum.songs.indexOf(song);
 		};
+		
 		
 	/**
  	* @desc Initializes currently selected song to null
