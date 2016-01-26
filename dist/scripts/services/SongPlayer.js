@@ -33,7 +33,7 @@
   * @desc Player volume
   * @type {Number}
   */
-     SongPlayer.volume = 0;
+     SongPlayer.volume = 70;
      SongPlayer.maxVolume = 100;
 		
 	/**
@@ -51,6 +51,7 @@
 				formats: ['mp3'],
 				preload: true
 			});
+			currentBuzzObject.setVolume(SongPlayer.volume);
 			
 			currentBuzzObject.bind('timeupdate', function() {
          $rootScope.$apply(function() {
@@ -73,7 +74,6 @@
 		
 		var playSong = function(song) {
 			currentBuzzObject.play();
-			SongPlayer.volume = 40;
 			song.playing = true;
 		};
 		
@@ -104,6 +104,7 @@
 		
 		
 		SongPlayer.play = function(song) {
+			
 			song = song || SongPlayer.currentSong;
 			if (SongPlayer.currentSong !== song) {
 				setSong(song);
@@ -123,8 +124,8 @@
 		SongPlayer.pause = function(song) {
 			song = song || SongPlayer.currentSong;
 			currentBuzzObject.pause();
-			song.playing = false
-			setSong(song);
+			song.playing = false;
+			//setSong(song);
 		};
 		
 	/**
@@ -174,6 +175,20 @@
 			setSong(song);
 			playSong(song);
 		};
+		
+		SongPlayer.mute = function() {
+			currentBuzzObject.toggleMute();
+
+			if (currentBuzzObject.isMuted()) {
+				SongPlayer.volume = 0;
+				SongPlayer.currentSong.muted = true;
+			} else {
+				SongPlayer.volume = currentBuzzObject.volume;
+				SongPlayer.currentSong.muted = false;
+			}
+		};
+		
+
 		
 	/**
   * @function setCurrentTime
